@@ -8,8 +8,8 @@ def blurPicture(root, pics, kernels, picFormat=".jpg"):
     index = len(pics)
     for pic in pics:
         img = cv.imread(pic, cv.IMREAD_UNCHANGED)
-        blured = cv.blur(img, kernel)
-        newName = "pic_" + str(index) + format
+        blured = cv.blur(img, kernels)
+        newName = "pic_" + str(index) + picFormat
         cv.imwrite(newName, blured)
         index += 1
     print("Directory: ", root)

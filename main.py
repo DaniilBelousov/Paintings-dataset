@@ -1,11 +1,12 @@
 import os
 import numpy as numpy
-import cv2 as cv 
+import cv2 as cv
 from renamePic import renamePictures
 from changeResolution import resizePic
 from blurPic import blurPicture
 from picToGray import pictureToGray
 from albumentations import (HueSaturationValue)
+from imageProcessing import processImages
 
 
 # Возвращает пути к файлам с картинками
@@ -23,30 +24,14 @@ def returnPics(dirName):
     for root, dirs, files in os.walk(dirName):
         return files
 
-# Создание директорий для картин классов
-
-
-def createDirs(root, dirNames):
-    # print("joined createDirs()")
-    path = os.path.abspath(root)
-    os.chdir(path)
-    for directory in dirNames:
-        if not os.path.exists(directory):
-            os.mkdir(directory)
-            print("Directory created: ", os.path.join(exportRoot, directory))
-
 
 if __name__ == "__main__":
     # ----------------------------------------------
     # Инициализация папок и путей - лучше не трогать!!
     # путь к папке с исходными изображениями
-    dirNames = () # сюда пихать нозвания новых папок,если их надо создать, иначе оставлять пустым
-    root, dirs = returnPaths("paintings")                            
+    root, dirs = returnPaths("paintings")
     # путь к изображениям, обработанным
     exportRoot, exportDirs = returnPaths("changedPaintings")
-    # Создаем директории, если их нет
-    if len(dirNames) != 0:
-        createDirs(exportRoot, dirNames)
     # Создание путей к папкам с классами
     for i in range(len(dirs)):
         dirs[i] = root + "\\" + dirs[i]
@@ -72,8 +57,9 @@ if __name__ == "__main__":
         pics = returnPics(dirs[i])
         # изменить размер фото | width height можно менять
         resizePic(dirs[i], exportDirs[i], pics, width, height)
-        # Блюр | kernels можно менять 
-        # pics = returnPics(exportDirs[i])
+        # Блюр | kernels можно менять
+        pics = returnPics(exportDirs[i])
+        processImages(exportDirs[i], pics)
         # blurPicture(exportDirs[i], pics, kernels)
         pics = returnPics(exportDirs[i])
         # Картинки в серые

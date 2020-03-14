@@ -4,7 +4,7 @@ import os
 
 
 def renamePictures(root, pics, name="pic", picFormat=".jpg"):
-    index = len(pics)
+    index = 0
     print(root, "-->", index)
     for pic in pics:
         picPath = root + "\\" + pic
